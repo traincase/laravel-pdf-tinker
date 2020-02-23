@@ -1,0 +1,63 @@
+$btn-border-radius: 0;
+$card-border-radius: 0;
+$input-border-radius: 0;
+$dark: rgb(50, 54, 57);
+$secondary: rgb(82, 86, 89);
+$progress-border-radius: 0;
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "../../node_modules/codemirror";
+@import "playground";
+
+body {
+  background-color: $secondary;
+}
+
+/**
+ * Tiles in the navbar for portrait/landscape mode
+ */
+.radio-tiles {
+    list-style-type:none;
+    margin: 0;
+    padding:0;
+
+    li {
+        float:left;
+        margin:0 5px 0 0;
+        width: 50px;
+        height: 50px;
+        position:relative;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    label, input {
+        display:block;
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+    }
+
+    input[type="radio"] {
+        opacity:0.011;
+        z-index:100;
+    }
+
+    input[type="radio"]:checked + label {
+        background: grey;
+    }
+
+    label {
+        cursor:pointer;
+        z-index:90;
+        font-size: 30px;
+        color: white;
+        margin: 0;
+        padding: 2px 11px;
+    }
+}
+

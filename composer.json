@@ -1,0 +1,39 @@
+{
+    "name": "traincase/laravel-pdf-tinker",
+    "description": "Live tinkering with HTML templates for conversion to PDF.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "html",
+        "pdf",
+        "html2pdf",
+        "preview"
+    ],
+    "authors": [
+        {
+            "name": "Jelle Roorda",
+            "email": "info@roordaict.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Traincase\\LaravelPdfTinker\\": "./src"
+        }
+    },
+    "require": {
+        "php": "^7.4",
+        "ext-json": "*",
+        "traincase/html-to-pdf-tinker": "dev-master",
+        "laravel/framework": "*",
+        "illuminate/support": "^6.16",
+        "graham-campbell/flysystem": "^6.3"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Traincase\\LaravelPdfTinker\\PdfTinkerServiceProvider"
+            ]
+        }
+    }
+}

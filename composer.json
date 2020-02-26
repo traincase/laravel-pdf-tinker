@@ -24,10 +24,18 @@
     "require": {
         "php": "^7.4",
         "ext-json": "*",
-        "traincase/html-to-pdf-tinker": "dev-master",
+        "traincase/html-to-pdf-tinker": "^0.1",
         "laravel/framework": "*",
         "illuminate/support": "^6.16",
         "graham-campbell/flysystem": "^6.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "larapack/dd": "^1.1"
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     },
     "extra": {
         "laravel": {

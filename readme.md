@@ -1,4 +1,5 @@
 # Laravel PDF Tinker
+
 **This package is meant as a tool for local development. Do not include this package in your production build.**
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/traincase/laravel-pdf-tinker.svg?style=flat-square)](https://packagist.org/packages/traincase/laravel-pdf-tinker)
@@ -7,7 +8,6 @@
 Laravel PDF Tinker gives you a quick interface to debug and fiddle with the creation of HTML templates that will be converted into PDF's.
 
 If you're one of those guys that frequently has to create custom templates for every client (order confirmations, goods deliveries, invoices etc.) this package is for you.
-
 
 ## Installation
 Since this package is only meant for during local development install this package as a development dependency.
@@ -63,6 +63,7 @@ This means that if you run `wkhtmltopdf --version` in a terminal it should outpu
 $ wkhtmltopdf --version
 wkhtmltopdf 0.12.5 (with patched qt)
 ```
+
 If you're using mac&homebrew you can run `brew cask install wkhtmltopdf`. 
 On any other system download the binaries for your system from the [wkhtmltopdf website](https://wkhtmltopdf.org/downloads.html).
 

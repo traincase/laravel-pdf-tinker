@@ -6,7 +6,7 @@ use Traincase\LaravelPdfTinker\Http\Controllers\PlaygroundController;
 Route::group([
     'prefix' => config('laravel-pdf-tinker.route_prefix'),
     'as' => 'vendor.laravel-pdf-tinker.'
-], function() {
+], function () {
     Route::get('/playground', [PlaygroundController::class, 'index'])
         ->name('playground');
 

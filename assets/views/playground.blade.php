@@ -147,7 +147,14 @@
             });
 
             $('#driver').on('change', function() {
-                $('#options').val(JSON.stringify(defaultOptions[$(this).val()], null, 2));
+                let options = defaultOptions[$(this).val()];
+
+                // Set driver options to empty object when there are no options in config
+                if (!options) {
+                    options = {}
+                }
+
+                $('#options').val(JSON.stringify(options, null, 2));
             }).change();
 
             previewElement[0].addEventListener('load', () =>  {

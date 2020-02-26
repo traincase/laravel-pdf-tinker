@@ -1,6 +1,5 @@
 // Window bindings
 import CodeMirror from 'codemirror';
-console.log(CodeMirror)
 window.CodeMirror = CodeMirror
 
 import jQuery from 'jquery';

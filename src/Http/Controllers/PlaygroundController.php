@@ -67,7 +67,7 @@ class PlaygroundController
                 200,
                 [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => "inline; filename='pdf-tinker-{$alias}.pdf'",
+                    'Content-Disposition' => "inline; filename=pdf-tinker-{$alias}.pdf",
                 ]
             );
         } catch (FileNotFoundException $exception) {

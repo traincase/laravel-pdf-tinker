@@ -38,5 +38,9 @@ class PdfTinkerServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/laravel-pdf-tinker.php', 'laravel-pdf-tinker');
 
         $this->loadRoutesFrom(__DIR__.'/Http/routes.php');
+
+        $this->publishes([
+            __DIR__ . '/../config/laravel-pdf-tinker.php' => config_path('laravel-pdf-tinker.php'),
+        ], 'laravel-pdf-tinker-config');
     }
 }

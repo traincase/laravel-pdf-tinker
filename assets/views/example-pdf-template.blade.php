@@ -19,7 +19,6 @@
 
         .invoice-box table {
             width: 100%;
-            line-height: inherit;
             text-align: left;
         }
 

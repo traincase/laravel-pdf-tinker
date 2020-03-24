@@ -1,5 +1,5 @@
 @extends('laravel-pdf-tinker::layouts.master', [
-    'pageTitle' => 'PDF Viewer',
+    'pageTitle' => 'Laravel PDF Tinker',
     'pageDescription' => 'Test your HTML PDF template using PHP PDF libraries',
     'pageWidth' => 'full'
 ])
@@ -106,14 +106,20 @@
 @endsection
 
 @push('navbar_actions')
-    <div class="refresh-editor">
-        <div style="">
-            <div>
-                <input type="checkbox" id="auto-update" checked>
-                <label for="auto-update">Refresh automatically</label>
-            </div>
-            <button class="btn btn-sm btn-block btn-outline-light" onclick="updateView()"><i class="fas fa-recycle"></i> Refresh once</button>
+    <div class="automatic-action">
+        <div>
+            <input type="checkbox" id="auto-format" checked>
+            <label for="auto-format">Format automatically</label>
         </div>
+        <button class="btn btn-sm btn-block btn-outline-light" onclick="formatCode()"><i class="fas fa-recycle"></i> Format once</button>
+    </div>
+
+    <div class="automatic-action">
+        <div>
+            <input type="checkbox" id="auto-update" checked>
+            <label for="auto-update">Refresh automatically</label>
+        </div>
+        <button class="btn btn-sm btn-block btn-outline-light" onclick="updateView()"><i class="fas fa-recycle"></i> Refresh once</button>
     </div>
 
     {{-- The Portrait/landscape mode inside the menu bar--}}
@@ -146,16 +152,19 @@
         let updateTimeout = null;
         let defaultOptions = {!! json_encode(config('laravel-pdf-tinker.default_driver_options')) !!};
         let codeEditor = null;
+        let autoFormat = true;
 
         $(document).ready(() => {
             initCodeEditor();
             progressBarElement = $('#progress-bar');
             previewElement = $('#preview');
 
+            // Update PDF output when changing configuration settings.
             $('form').on('change', () => {
                 updateView();
             });
 
+            // Set the default settings when changing drivers in configuration.
             $('#driver').on('change', function() {
                 let options = defaultOptions[$(this).val()];
 
@@ -167,10 +176,18 @@
                 $('#options').val(JSON.stringify(options, null, 4));
             }).change();
 
+            // Allow toggling of auto refresh
             $('#auto-update').on('change', function() {
                 toggleAutoRefreshEditor($(this).is(':checked'))
             }).change();
 
+            // Allow toggling of auto formatting
+            $('#auto-format').on('change', function() {
+                autoFormat = $(this).is(':checked');
+                console.log($(this).is(':checked'))
+            }).change();
+
+            // Complete progressbar when PDF is loaded
             previewElement[0].addEventListener('load', () =>  {
                 setProgressBarValue(100);
                 hideProgressBar();
@@ -194,7 +211,10 @@
             setProgressBarValue(25);
             setProgressBarValue(50);
 
-            formatCode();
+            if (autoFormat === true) {
+                formatCode();
+                console.log(autoFormat)
+            }
 
             $.ajax({
                 url: "{{ route('vendor.laravel-pdf-tinker.preview') }}",

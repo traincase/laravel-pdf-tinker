@@ -23,6 +23,7 @@
                 @stack('navbar_actions')
             </div>
         </nav>
+
         <div class="@if(isset($pageWidth) && $pageWidth === 'full')container-fluid @else container @endif">
             @yield('content')
         </div>

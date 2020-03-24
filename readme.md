@@ -9,6 +9,8 @@ Laravel PDF Tinker gives you a quick interface to debug and fiddle with the crea
 
 If you're one of those guys that frequently has to create custom templates for every client (order confirmations, goods deliveries, invoices etc.) this package is for you.
 
+![alt text](https://github.com/traincase/laravel-pdf-tinker/raw/master/screenshot.png "Screenshot of playground")
+
 ## Installation
 Since this package is only meant for during local development install this package as a development dependency.
 

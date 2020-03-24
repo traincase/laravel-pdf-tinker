@@ -2,9 +2,7 @@
 
 namespace Traincase\LaravelPdfTinker;
 
-use Dompdf\Dompdf;
 use Illuminate\Support\ServiceProvider;
-use mikehaertl\wkhtmlto\Pdf;
 use Traincase\HtmlToPdfTinker\Drivers\DompdfDriver;
 use Traincase\HtmlToPdfTinker\Drivers\WkhtmltopdfDriver;
 use Traincase\HtmlToPdfTinker\PdfTinkerManager;
@@ -13,21 +11,29 @@ class PdfTinkerServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        /** Bind the manager in the container, to allow addition of drivers */
         $this->app->singleton(PdfTinkerManager::class, function () {
             $manager = new PdfTinkerManager();
 
             $manager->extend('dompdf', function () {
-                $dompdf = new Dompdf();
+                $dompdf = new \Dompdf\Dompdf();
                 $dompdf->setBasePath(realpath(base_path('public')));
 
                 return new DompdfDriver($dompdf);
             });
 
             $manager->extend('wkhtmltopdf', function () {
-                return new WkhtmltopdfDriver(new Pdf);
+                return new WkhtmltopdfDriver(new \mikehaertl\wkhtmlto\Pdf);
             });
 
             return $manager;
+        });
+
+        /** Make sure we can type hint the Filesystem in our controller. */
+        $this->app->bind(\League\Flysystem\Filesystem::class, function() {
+            return new \League\Flysystem\Filesystem(
+                new \League\Flysystem\Adapter\Local(storage_path('/'))
+            );
         });
     }
 

@@ -7,7 +7,7 @@
 @section('content')
 
     {{-- Show error toast when PDF couldn't be generated --}}
-    <div class="position-absolute w-100 h-100 p-4">
+    <div class="position-absolute w-100 p-4">
         <div class="d-flex w-100 align-items-start">
             <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-end align-items-start" style="z-index: 5">
                 <div id="error-alert" role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="false">
@@ -106,6 +106,16 @@
 @endsection
 
 @push('navbar_actions')
+    <div class="refresh-editor">
+        <div style="">
+            <div>
+                <input type="checkbox" id="auto-update" checked>
+                <label for="auto-update">Refresh automatically</label>
+            </div>
+            <button class="btn btn-sm btn-block btn-outline-light" onclick="updateView()"><i class="fas fa-recycle"></i> Refresh once</button>
+        </div>
+    </div>
+
     {{-- The Portrait/landscape mode inside the menu bar--}}
     <form>
         <ul class="radio-tiles">
@@ -154,7 +164,11 @@
                     options = {}
                 }
 
-                $('#options').val(JSON.stringify(options, null, 2));
+                $('#options').val(JSON.stringify(options, null, 4));
+            }).change();
+
+            $('#auto-update').on('change', function() {
+                toggleAutoRefreshEditor($(this).is(':checked'))
             }).change();
 
             previewElement[0].addEventListener('load', () =>  {
@@ -169,10 +183,8 @@
                 lineNumbers: true,
             });
 
-            codeEditor.on('keyup', () => {
+            codeEditor.on('keyup', function() {
                 $('#code').val(codeEditor.getValue());
-                clearTimeout(updateTimeout);
-                updateTimeout = setTimeout(updateView, 750);
             });
         }
 
@@ -236,6 +248,20 @@
 
         function setProgressBarValue(percentage) {
             progressBarElement.css('width', percentage + '%').attr('aria-valuenow', percentage);
+        }
+
+        function toggleAutoRefreshEditor(enabled = true) {
+            if (!enabled) {
+                codeEditor.off('keyup', refreshEditorAfterInterval);
+                return;
+            }
+
+            codeEditor.on('keyup', refreshEditorAfterInterval);
+        }
+
+        function refreshEditorAfterInterval() {
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(updateView, 1000);
         }
     </script>
 @endpush

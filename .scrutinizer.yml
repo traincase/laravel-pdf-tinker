@@ -35,6 +35,9 @@ build:
       tests:
         override:
           - php-scrutinizer-run --enable-security-analysis
+    functional-tests:
+      environment:
+        selenium: true
   dependencies:
     before:
       - composer self-update

@@ -1,1 +1,6 @@
+build/
+coverage/
 node_modules/
+tests/Browser/
+vendor/
+composer.lock

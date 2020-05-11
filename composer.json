@@ -21,17 +21,22 @@
             "Traincase\\LaravelPdfTinker\\": "./src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Traincase\\LaravelPdfTinker\\Tests\\": "./tests"
+        }
+    },
     "require": {
         "php": "^7.4",
         "ext-json": "*",
         "traincase/html-to-pdf-tinker": "^0.1",
-        "laravel/framework": "*",
-        "illuminate/support": "^6.16",
+        "laravel/framework": "^6.0",
         "graham-campbell/flysystem": "^6.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
-        "larapack/dd": "^1.1"
+        "larapack/dd": "^1.1",
+        "orchestra/testbench-dusk": "^4.7"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit",

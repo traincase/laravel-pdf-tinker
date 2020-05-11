@@ -78,13 +78,13 @@ It's possible to create a driver of the HTML2PDF generation library of your choi
     public function boot()
     {
         if ($this->app->isLocal()) {
-            $manager = $this->app->make(\Traincase\HtmlToPdfTinker\PdfTinkerManager::class);
-   
-            $manager->extend('your-driver-alias', function() {
-                // Need to fetch some things from the container? Sure.
-                $dependency = $this->app->make(\SomeFancyClass::class);
-   
-                return new \App\Drivers\YourFancyDriver($dependency);
+            $this->app->resolving(\Traincase\HtmlToPdfTinker\PdfTinkerManager::class, function($manager) {
+                $manager->extend('test-driver', function() {
+                    // Need to fetch some things from the container? Sure.
+                    $dependency = $this->app->make(\SomeFancyClass::class);
+      
+                    return new \App\Drivers\YourFancyDriver($dependency);
+                });
             });
         }
     }

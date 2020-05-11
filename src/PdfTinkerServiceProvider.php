@@ -13,24 +13,28 @@ class PdfTinkerServiceProvider extends ServiceProvider
     {
         /** Bind the manager in the container, to allow addition of drivers */
         $this->app->singleton(PdfTinkerManager::class, function () {
-            $manager = new PdfTinkerManager();
+            return new PdfTinkerManager;
+        });
 
+        /** Bind the DomPDF driver on the manager */
+        $this->app->resolving(PdfTinkerManager::class, function (PdfTinkerManager $manager) {
             $manager->extend('dompdf', function () {
                 $dompdf = new \Dompdf\Dompdf();
                 $dompdf->setBasePath(realpath(base_path('public')));
 
                 return new DompdfDriver($dompdf);
             });
+        });
 
+        /** Bind the Wkhtmltopdf driver on the manager */
+        $this->app->resolving(PdfTinkerManager::class, function (PdfTinkerManager $manager) {
             $manager->extend('wkhtmltopdf', function () {
                 return new WkhtmltopdfDriver(new \mikehaertl\wkhtmlto\Pdf);
             });
-
-            return $manager;
         });
 
         /** Make sure we can type hint the Filesystem in our controller. */
-        $this->app->bind(\League\Flysystem\Filesystem::class, function() {
+        $this->app->bind(\League\Flysystem\Filesystem::class, function () {
             return new \League\Flysystem\Filesystem(
                 new \League\Flysystem\Adapter\Local(storage_path('/'))
             );

@@ -20,7 +20,7 @@
         </whitelist>
     </filter>
     <php>
-        <env name="APP_URL" value="http://127.0.0.1:4444"/>
+        <env name="APP_URL" value="http://127.0.0.1:9000"/>
     </php>
     <logging>
         <log type="junit" target="build/report.junit.xml"/>

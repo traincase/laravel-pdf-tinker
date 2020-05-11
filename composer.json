@@ -30,7 +30,7 @@
         "php": "^7.4",
         "ext-json": "*",
         "traincase/html-to-pdf-tinker": "^0.1",
-        "laravel/framework": "^6.0",
+        "laravel/framework": "^6.0 || ^7.0",
         "graham-campbell/flysystem": "^6.3"
     },
     "require-dev": {

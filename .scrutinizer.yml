@@ -26,6 +26,9 @@ build:
     memcached: false
     neo4j: false
     rabbitmq: false
+    google_chrome:
+      use_latest: true
+    selenium: true
     apt_packages:
       - xvfb
       - libfontconfig
@@ -35,14 +38,10 @@ build:
       tests:
         override:
           - php-scrutinizer-run --enable-security-analysis
-    functional-tests:
-      environment:
-        selenium: true
   dependencies:
     before:
       - composer self-update
       - composer update --no-interaction --prefer-dist --no-progress
-      - php artisan dusk:chrome-driver
   tests:
     before:
       -

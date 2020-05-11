@@ -42,6 +42,7 @@ build:
     before:
       - composer self-update
       - composer update --no-interaction --prefer-dist --no-progress
+      - php artisan dusk:chrome-driver
   tests:
     before:
       -

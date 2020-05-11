@@ -28,7 +28,6 @@ build:
     rabbitmq: false
     google_chrome:
       use_latest: true
-    selenium: true
     apt_packages:
       - xvfb
       - libfontconfig

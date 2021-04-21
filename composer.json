@@ -27,7 +27,7 @@
         }
     },
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8.0",
         "ext-json": "*",
         "traincase/html-to-pdf-tinker": "^1.0",
         "laravel/framework": "^6.0 || ^7.0 || ^8.0",

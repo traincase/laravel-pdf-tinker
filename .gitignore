@@ -1,4 +1,4 @@
-build/
+build/report.junit.xml
 coverage/
 node_modules/
 tests/Browser/

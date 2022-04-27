@@ -3,46 +3,50 @@
 namespace Traincase\LaravelPdfTinker\Http\Controllers;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
-use Symfony\Component\HttpFoundation\Response;
+use League\Flysystem\FilesystemException;
 use Traincase\HtmlToPdfTinker\DTO\PdfToGenerateDTO;
 use Traincase\LaravelPdfTinker\Http\Requests\PreviewRequest;
 use Traincase\HtmlToPdfTinker\PdfTinkerManager;
 
 class PlaygroundController
 {
-    /**
-     * @param PdfTinkerManager $manager
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function index(PdfTinkerManager $manager)
+    public function index(PdfTinkerManager $manager): Response
     {
-        return view('laravel-pdf-tinker::playground', [
+        return response()->view('laravel-pdf-tinker::playground', [
             'drivers' => $manager->getRegisteredDrivers(),
         ]);
     }
 
-    public function preview(PreviewRequest $request, Filesystem $filesystem, PdfTinkerManager $tinkerManager)
-    {
+    public function preview(
+        PreviewRequest $request,
+        Filesystem $filesystem,
+        PdfTinkerManager $tinkerManager
+    ): JsonResponse {
         try {
-            $filename = Str::random('10');
+            $filename = Str::random(10);
 
             $options = json_decode($request->input('options', '{}'), true);
+
             if (!is_array($options)) {
                 throw new \Exception('Driver options are not in valid json format.');
             }
 
-            $tinkerManager->resolve($request->input('driver'))
-                ->storeOnFilesystem($filesystem, new PdfToGenerateDTO([
-                    'orientation' => $request->input('mode', 'portrait'),
-                    'html' => $request->input('html'),
-                    'options' => $options,
-                    'filename' => "{$filename}.pdf",
-                    'path' => 'vendor/laravel-pdf-tinker',
-                ]));
+            $tinkerManager
+                ->resolve($request->input('driver'))
+                ->storeOnFilesystem(
+                    $filesystem,
+                    PdfToGenerateDTO::fromArray([
+                        'orientation' => $request->input('mode', 'portrait'),
+                        'html' => $request->input('html'),
+                        'options' => $options,
+                        'filename' => "{$filename}.pdf",
+                        'path' => 'vendor/laravel-pdf-tinker',
+                    ])
+                );
 
             return response()->json([
                 'url' => route('vendor.laravel-pdf-tinker.download', ['alias' => $filename])
@@ -54,23 +58,18 @@ class PlaygroundController
         }
     }
 
-    /**
-     * @param string $alias
-     * @param FilesystemInterface $filesystem
-     * @return Response
-     */
-    public function download(string $alias, Filesystem $filesystem)
+    public function download(string $alias, Filesystem $filesystem): Response
     {
         try {
-            return new Response(
-                $filesystem->readAndDelete("vendor/laravel-pdf-tinker/{$alias}.pdf"),
-                200,
-                [
-                    'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => "inline; filename=pdf-tinker-{$alias}.pdf",
-                ]
-            );
-        } catch (FileNotFoundException $exception) {
+            $contents = $filesystem->read($location = "vendor/laravel-pdf-tinker/{$alias}.pdf");
+
+            $filesystem->delete($location);
+
+            return new Response($contents, 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => "inline; filename=pdf-tinker-{$alias}.pdf",
+            ]);
+        } catch (FilesystemException $exception) {
             return response('PDF not found', 404);
         }
     }
@@ -80,13 +79,9 @@ class PlaygroundController
      */
     public function css()
     {
-        return new Response(
-            file_get_contents(__DIR__ . '/../../../build/playground.css'),
-            200,
-            [
-                'Content-Type' => 'text/css',
-            ]
-        );
+        return new Response(file_get_contents(__DIR__ . '/../../../build/playground.css'), 200, [
+            'Content-Type' => 'text/css',
+        ]);
     }
 
     /**
@@ -94,12 +89,8 @@ class PlaygroundController
      */
     public function js()
     {
-        return new Response(
-            file_get_contents(__DIR__ . '/../../../build/playground.js'),
-            200,
-            [
-                'Content-Type' => 'text/javascript',
-            ]
-        );
+        return new Response(file_get_contents(__DIR__ . '/../../../build/playground.js'), 200, [
+            'Content-Type' => 'text/javascript',
+        ]);
     }
 }
